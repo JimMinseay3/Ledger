@@ -1,15 +1,25 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+import sys
 
 block_cipher = None
 
+# Get the project root directory relative to this spec file
+# SPEC is the path to the spec file
+spec_dir = os.path.dirname(os.path.abspath(SPEC))
+root_dir = os.path.dirname(spec_dir)
+
+# Add src to sys.path for analysis
+sys.path.insert(0, os.path.join(root_dir, 'src'))
+
 a = Analysis(
-    ['../src/main.py'],
-    pathex=['../src'],
+    [os.path.join(root_dir, 'src', 'main.py')],
+    pathex=[os.path.join(root_dir, 'src')],
     binaries=[],
     datas=[
-        ('../assets/Ledger.ico', 'assets'),
+        (os.path.join(root_dir, 'assets', 'Ledger.ico'), 'assets'),
     ],
-    hiddenimports=[],
+    hiddenimports=['pdfplumber', 'pdfminer', 'pdfminer.six'],
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -41,5 +51,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon='../assets/Ledger.ico',
+    icon=os.path.join(root_dir, 'assets', 'Ledger.ico'),
 )

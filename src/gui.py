@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, ttk, messagebox
-
-# 假设 extract_transaction_details 函数在 pdf_parser.py 中
+import os
+import sys
 from pdf_parser import extract_transaction_details
 
 class PDFExtractorApp:
@@ -10,6 +10,14 @@ class PDFExtractorApp:
         master.title("PDF信息提取工具")
         master.geometry("1000x700") # 增加窗口宽度以容纳新列
         master.minsize(1000, 700)  # 更新最小尺寸
+
+        # 设置图标
+        try:
+            icon_path = self.resource_path(os.path.join('assets', 'Ledger.ico'))
+            if os.path.exists(icon_path):
+                master.iconbitmap(icon_path)
+        except Exception as e:
+            print(f"无法加载图标: {e}")
 
         # 创建菜单栏
         self.menubar = tk.Menu(master)
@@ -72,6 +80,14 @@ class PDFExtractorApp:
 
         # 存储所有数据用于搜索
         self.all_data = []
+
+    def resource_path(self, relative_path):
+        """ 获取资源的绝对路径，兼容开发环境和 PyInstaller 打包环境 """
+        if hasattr(sys, '_MEIPASS'):
+            # PyInstaller 打包后的临时目录
+            return os.path.join(sys._MEIPASS, relative_path)
+        # 开发环境，由于 gui.py 在 src 下，资源在 ../assets
+        return os.path.join(os.path.dirname(os.path.dirname(__file__)), relative_path)
 
     def on_search(self, *args):
         search_text = self.search_var.get().lower()

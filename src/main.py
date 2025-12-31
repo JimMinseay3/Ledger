@@ -1,7 +1,8 @@
-from pdf_parser import extract_transaction_details
-
+import sys
+import os
 import tkinter as tk
 from gui import PDFExtractorApp
+from pdf_parser import extract_transaction_details
 
 def main():
     root = tk.Tk()
